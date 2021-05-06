@@ -11,4 +11,11 @@
     <dimen name="screenwriter_text_size">20sp</dimen>
     <dimen name="duration_text_size">20sp</dimen>
     <dimen name="label_margin">5dp</dimen>
+    <dimen name="fab_icon_size">56dp</dimen>
+    <dimen name="fab_margin">15dp</dimen>
+    <dimen name="recycler_item_padding">10dp</dimen>
+    <dimen name="recycler_item_text_size">25sp</dimen>
+    <dimen name="recycler_item_line_height">1dp</dimen>
+    <dimen name="recycler_item_line_margin_end">20dp</dimen>
+    <dimen name="recycler_item_litle_text_size">15sp</dimen>
 </resources>

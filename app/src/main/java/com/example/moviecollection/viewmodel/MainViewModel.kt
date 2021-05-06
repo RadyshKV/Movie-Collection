@@ -8,15 +8,21 @@ import java.lang.Thread.sleep
 
 class MainViewModel(private val liveDataToObserve: MutableLiveData<Any> = MutableLiveData(), private val repositoryImpl: Repository = RepositoryImpl()) : ViewModel() {
 
+    val LOAD_TIME: Long = 1000
+
     fun getLiveData() = liveDataToObserve
 
-    fun getMovieData() = getDataFromLocalSource()
+    fun getMovieDataFromLocalSourceRus() = getDataFromLocalSource(isRussian = true)
 
-    private fun getDataFromLocalSource() {
+    fun getMovieDataFromLocalSourceWorld() = getDataFromLocalSource(isRussian = false)
+
+    fun getMovieDataFromRemoteSource() = getDataFromLocalSource(isRussian = true)
+
+    private fun getDataFromLocalSource(isRussian: Boolean) {
         liveDataToObserve.value = AppState.Loading
         Thread {
-            sleep(1000)
-            liveDataToObserve.postValue(AppState.Success(repositoryImpl.getMovieDataFromLocalStorage()))
+            sleep(LOAD_TIME)
+            liveDataToObserve.postValue(AppState.Success(if (isRussian) repositoryImpl.getMovieDataFromLocalStorageRus() else repositoryImpl.getMovieDataFromLocalStorageWorld()))
         }.start()
     }
 }
