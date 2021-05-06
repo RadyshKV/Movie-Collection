@@ -9,4 +9,7 @@
     <string name="director">Режиссер</string>
     <string name="screenwriter">Сценарист</string>
     <string name="duration">Время</string>
+    <string name="swith_to_country">Swith to Country</string>
+    <string name="error">Error</string>
+    <string name="reload">Reload</string>
 </resources>
