@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/itemContainer"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/mainFragmentRecyclerItemTitle"
+        android:id="@+id/itemTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="@dimen/recycler_item_padding"
@@ -17,31 +17,31 @@
         tools:text="Фильм" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/mainFragmentRecyclerItemGenre"
+        android:id="@+id/itemYear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="@dimen/recycler_item_padding"
         android:textSize="@dimen/recycler_item_litle_text_size"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainFragmentRecyclerItemTitle"
-        tools:text="Жанр" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/mainFragmentRecyclerItemYear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/recycler_item_padding"
-        android:textSize="@dimen/recycler_item_text_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainFragmentRecyclerItemTitle"
+        app:layout_constraintTop_toBottomOf="@+id/itemTitle"
         tools:text="Год" />
 
     <View
+        android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/recycler_item_line_height"
         android:layout_marginEnd="@dimen/recycler_item_line_margin_end"
         android:background="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainFragmentRecyclerItemGenre" />
+        app:layout_constraintTop_toBottomOf="@+id/itemYear" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/itemYear" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
