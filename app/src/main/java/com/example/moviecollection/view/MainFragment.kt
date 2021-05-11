@@ -7,18 +7,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.moviecollection.R
-import com.example.moviecollection.adapters.MainFragmentAdapter
+import com.example.moviecollection.adapters.VerticalFragmentAdapter
 import com.example.moviecollection.databinding.MainFragmentBinding
-import com.example.moviecollection.model.entities.Movie
-import com.example.moviecollection.model.interfaces.OnItemViewClickListener
+import com.example.moviecollection.model.showSnackBar
 import com.example.moviecollection.viewmodel.AppState
 import com.example.moviecollection.viewmodel.MainViewModel
-import com.google.android.material.snackbar.Snackbar
 
 class MainFragment : Fragment() {
     private lateinit var binding: MainFragmentBinding
     private lateinit var viewModel: MainViewModel
-    private var adapter: MainFragmentAdapter? = null
+    private var adapter: VerticalFragmentAdapter? = null
     private var isDataSetRus: Boolean = true
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -28,7 +26,7 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.mainFragmentRecyclerView.adapter = adapter
+        binding.verticalFragmentRecyclerView.adapter = adapter
         binding.mainFragmentFAB.setOnClickListener { changeMovieDataSet() }
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.getLiveData().observe(viewLifecycleOwner, { renderData(it as AppState) })
@@ -51,45 +49,26 @@ class MainFragment : Fragment() {
         when (appState) {
             is AppState.Success -> {
                 mainFragmentLoadingLayout.visibility = View.GONE
-                adapter = MainFragmentAdapter(object : OnItemViewClickListener {
-                    override fun onItemViewClick(movie: Movie) {
-                        val manager = activity?.supportFragmentManager
-                        manager?.let { manager ->
-                            val bundle = Bundle().apply {
-                                putParcelable(DetailsFragment.BUNDLE_EXTRA, movie)
-                            }
-                            manager.beginTransaction()
-                                    .add(R.id.container, DetailsFragment.newInstance(bundle))
-                                    .addToBackStack("")
-                                    .commitAllowingStateLoss()
-                        }
-                    }
-                }
-                ).apply {
+                adapter = VerticalFragmentAdapter(this@MainFragment).apply {
                     setMovies(appState.movieData)
+                    initCategories()
                 }
-                mainFragmentRecyclerView.adapter = adapter
+                verticalFragmentRecyclerView.adapter = adapter
             }
             is AppState.Loading -> {
                 mainFragmentLoadingLayout.visibility = View.VISIBLE
             }
             is AppState.Error -> {
                 mainFragmentLoadingLayout.visibility = View.GONE
-                Snackbar
-                        .make(mainFragmentFAB, getString(R.string.error), Snackbar.LENGTH_INDEFINITE)
-                        .setAction(getString(R.string.reload)) { viewModel.getMovieDataFromLocalSourceRus() }
-                        .show()
+                mainFragmentRootView.showSnackBar(
+                        getString(R.string.error),
+                        getString(R.string.reload),
+                        { viewModel.getMovieDataFromLocalSourceRus() })
             }
         }
     }
 
-    override fun onDestroy() {
-        adapter?.removeListener()
-        super.onDestroy()
-    }
-
     companion object {
-        fun newInstance() =
-                MainFragment()
+        fun newInstance() = MainFragment()
     }
 }

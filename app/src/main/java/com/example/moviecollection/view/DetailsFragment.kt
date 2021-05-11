@@ -19,26 +19,21 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val movieData = arguments?.getParcelable<Movie>(BUNDLE_EXTRA)
-        if (movieData != null) {
-            binding.movieTitle.text = movieData.title
-            binding.yearOfRelease.text = movieData.yearOfRelease.toString()
-            binding.rating.text = movieData.rating.toString()
-            binding.genre.text = movieData.genre
-            binding.briefDescription.text = movieData.briefDescription
-            binding.originCountry.text = movieData.originCountry
-            binding.director.text = movieData.director
-            binding.screenwriter.text = movieData.screenwriter
-            binding.duration.text = movieData.duration.toString()
+        arguments?.getParcelable<Movie>(BUNDLE_EXTRA)?.let { movie ->
+            binding.movieTitle.text = movie.title
+            binding.yearOfRelease.text = movie.yearOfRelease.toString()
+            binding.rating.text = movie.rating.toString()
+            binding.genre.text = movie.genre
+            binding.briefDescription.text = movie.briefDescription
+            binding.originCountry.text = movie.originCountry
+            binding.director.text = movie.director
+            binding.screenwriter.text = movie.screenwriter
+            binding.duration.text = movie.duration.toString()
         }
     }
 
     companion object {
         const val BUNDLE_EXTRA = "movie"
-        fun newInstance(bundle: Bundle): DetailsFragment {
-            val fragment = DetailsFragment()
-            fragment.arguments = bundle
-            return fragment
-        }
+        fun newInstance(bundle: Bundle) = DetailsFragment().apply { arguments = bundle }
     }
 }
