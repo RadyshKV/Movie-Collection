@@ -1,15 +1,13 @@
 <resources>
     <string name="app_name">Movie Collection</string>
-    <string name="hello">Hello World!</string>
     <string name="movie_title">Название фильма</string>
-    <string name="year_of_release">Год выпуска</string>
-    <string name="rating">Рейтинг</string>
+    <string name="date_of_release">Дата выхода в прокат</string>
+    <string name="popularity">Рейтинг</string>
     <string name="genre">Жанр</string>
-    <string name="origin_country">Страна происхождения</string>
-    <string name="director">Режиссер</string>
-    <string name="screenwriter">Сценарист</string>
-    <string name="duration">Время</string>
+    <string name="overview">Описание</string>
+    <string name="runtime">Время</string>
     <string name="swith_to_country">Swith to Country</string>
     <string name="error">Error</string>
     <string name="reload">Reload</string>
+    <string name="budget">Бюджет</string>
 </resources>

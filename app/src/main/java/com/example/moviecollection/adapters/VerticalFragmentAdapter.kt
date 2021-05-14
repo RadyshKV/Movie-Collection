@@ -20,15 +20,17 @@ class VerticalFragmentAdapter(private var mainFragment: MainFragment)
     private var categories: MutableCollection<String> = mutableSetOf()
 
 
-    fun setMovies (data: List<Movie>) {
+    fun setMovies(data: List<Movie>) {
         movies = data
-        notifyDataSetChanged()
     }
 
     fun initCategories() {
         for (movie in movies) {
-            categories.add(movie.genre)
+            movie.genre?.let {
+                categories.add(it[0])
+            }
         }
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int
@@ -69,7 +71,7 @@ class VerticalFragmentAdapter(private var mainFragment: MainFragment)
                             }
                         }
                     }).apply {
-                setMovies(movies.filter { it.genre == categorie })
+                setMovies(movies.filter { it.genre?.contains(categorie) == true })
             }
             horizontalRecyclerView.adapter = horizontalAdapter
         }

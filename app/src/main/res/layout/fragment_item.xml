@@ -40,8 +40,9 @@
         android:layout_width="1dp"
         android:layout_height="0dp"
         android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toBottomOf="@id/itemYear"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/itemYear" />
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
