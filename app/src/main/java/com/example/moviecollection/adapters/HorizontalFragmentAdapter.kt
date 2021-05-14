@@ -38,7 +38,7 @@ class HorizontalFragmentAdapter(private var itemClickListener: OnItemViewClickLi
 
         fun bind(movie: Movie) = with(binding) {
             itemTitle.text = movie.title
-            itemYear.text = movie.yearOfRelease.toString()
+            itemYear.text = movie.dateOfRelease
             root.setOnClickListener {
                 itemClickListener?.onItemViewClick(movie)
             }

@@ -12,6 +12,7 @@ import com.example.moviecollection.databinding.MainFragmentBinding
 import com.example.moviecollection.model.showSnackBar
 import com.example.moviecollection.viewmodel.AppState
 import com.example.moviecollection.viewmodel.MainViewModel
+import com.geekbrains.weatherwithmvvm.interactors.strings_interactor.StringsInteractorImpl
 
 class MainFragment : Fragment() {
     private lateinit var binding: MainFragmentBinding
@@ -29,16 +30,17 @@ class MainFragment : Fragment() {
         binding.verticalFragmentRecyclerView.adapter = adapter
         binding.mainFragmentFAB.setOnClickListener { changeMovieDataSet() }
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel.stringsInteractor = StringsInteractorImpl(requireContext())
         viewModel.getLiveData().observe(viewLifecycleOwner, { renderData(it as AppState) })
-        viewModel.getMovieDataFromLocalSourceRus()
+        viewModel.getMovieDataFromRemoteSourceRus()
     }
 
     private fun changeMovieDataSet() = with(binding) {
         if (isDataSetRus) {
-            viewModel.getMovieDataFromLocalSourceWorld()
+            viewModel.getMovieDataFromRemoteSourceWorld()
             mainFragmentFAB.setImageResource(R.drawable.ic_earth)
         } else {
-            viewModel.getMovieDataFromLocalSourceRus()
+            viewModel.getMovieDataFromRemoteSourceRus()
             mainFragmentFAB.setImageResource(R.drawable.ic_russia)
         }
         isDataSetRus = !isDataSetRus
@@ -47,7 +49,7 @@ class MainFragment : Fragment() {
     @Suppress("NAME_SHADOWING")
     private fun renderData(appState: AppState) = with(binding) {
         when (appState) {
-            is AppState.Success -> {
+            is AppState.SuccessListData -> {
                 mainFragmentLoadingLayout.visibility = View.GONE
                 adapter = VerticalFragmentAdapter(this@MainFragment).apply {
                     setMovies(appState.movieData)
@@ -61,9 +63,9 @@ class MainFragment : Fragment() {
             is AppState.Error -> {
                 mainFragmentLoadingLayout.visibility = View.GONE
                 mainFragmentRootView.showSnackBar(
-                        getString(R.string.error),
-                        getString(R.string.reload),
-                        { viewModel.getMovieDataFromLocalSourceRus() })
+                        viewModel.stringsInteractor.errorStr,
+                        viewModel.stringsInteractor.reloadStr,
+                        { viewModel.getMovieDataFromRemoteSourceRus() })
             }
         }
     }
