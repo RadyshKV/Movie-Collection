@@ -1,5 +1,10 @@
 package com.example.moviecollection.model
 
+import REQUEST_GET
+import REQUEST_TIMEOUT
+import SECTOR_GENRES
+import SECTOR_RESULTS
+import STRING_BUILDER_CAPACITY
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.moviecollection.BuildConfig
@@ -20,8 +25,9 @@ object Loader {
     fun loadMovies(isRussian: Boolean): List<MovieDTO>? {
         try {
             val region = if (isRussian) "&region=RU" else ""
-            val uri = URL("https://api.themoviedb.org/3/movie/top_rated?api_key=${BuildConfig.MOVIE_API_KEY}&language=ru-RU&page=1${region}")
-            return loadArrayDTO(uri, "results")
+            val uri =
+                URL("https://api.themoviedb.org/3/movie/top_rated?api_key=${BuildConfig.MOVIE_API_KEY}&language=ru-RU&page=1${region}")
+            return loadArrayDTO(uri, SECTOR_RESULTS)
         } catch (e: MalformedURLException) {
             e.printStackTrace()
         }
@@ -30,8 +36,9 @@ object Loader {
 
     fun loadGenres(): List<GenreDTO>? {
         try {
-            val uri = URL("https://api.themoviedb.org/3/genre/movie/list?language=ru-RU&api_key=${BuildConfig.MOVIE_API_KEY}&language=ru-RU")
-            return loadArrayDTO(uri, "genres")
+            val uri =
+                URL("https://api.themoviedb.org/3/genre/movie/list?language=ru-RU&api_key=${BuildConfig.MOVIE_API_KEY}&language=ru-RU")
+            return loadArrayDTO(uri, SECTOR_GENRES)
         } catch (e: MalformedURLException) {
             e.printStackTrace()
         }
@@ -43,8 +50,8 @@ object Loader {
         lateinit var urlConnection: HttpsURLConnection
         try {
             urlConnection = uri.openConnection() as HttpsURLConnection
-            urlConnection.requestMethod = "GET"
-            urlConnection.readTimeout = 10000
+            urlConnection.requestMethod = REQUEST_GET
+            urlConnection.readTimeout = REQUEST_TIMEOUT
             val bufferedReader = BufferedReader(InputStreamReader(urlConnection.inputStream))
             val lines = getLines(bufferedReader)
             val resultJSON = JSONObject(lines)
@@ -66,8 +73,8 @@ object Loader {
         lateinit var urlConnection: HttpsURLConnection
         try {
             urlConnection = uri.openConnection() as HttpsURLConnection
-            urlConnection.requestMethod = "GET"
-            urlConnection.readTimeout = 10000
+            urlConnection.requestMethod = REQUEST_GET
+            urlConnection.readTimeout = REQUEST_TIMEOUT
             val bufferedReader = BufferedReader(InputStreamReader(urlConnection.inputStream))
             return Gson().fromJson(getLines(bufferedReader), J::class.java)
         } catch (e: Exception) {
@@ -87,7 +94,7 @@ object Loader {
     }
 
     private fun getLinesForOld(reader: BufferedReader): String {
-        val rawData = StringBuilder(1024)
+        val rawData = StringBuilder(STRING_BUILDER_CAPACITY)
         var tempVariable: String?
 
         while (reader.readLine().also { tempVariable = it } != null) {
@@ -101,14 +108,17 @@ object Loader {
     fun getLinesForNew(reader: BufferedReader): String {
         return reader.lines().collect(Collectors.joining("\n"))
     }
-}
 
-fun loadMovieDetails(id: Long?): MovieDetailDTO? {
-    try {
-        val uri = URL("https://api.themoviedb.org/3/movie/${id}?api_key=${BuildConfig.MOVIE_API_KEY}&language=ru-RU")
-        return Loader.loadDTO(uri)
-    } catch (e: MalformedURLException) {
-        e.printStackTrace()
+
+    fun loadMovieDetails(id: Long?): MovieDetailDTO? {
+        try {
+            val uri =
+                URL("https://api.themoviedb.org/3/movie/${id}?api_key=${BuildConfig.MOVIE_API_KEY}&language=ru-RU")
+            return Loader.loadDTO(uri)
+        } catch (e: MalformedURLException) {
+            e.printStackTrace()
+        }
+        return null
     }
-    return null
+
 }

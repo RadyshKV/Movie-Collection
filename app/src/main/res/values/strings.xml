@@ -10,4 +10,5 @@
     <string name="error">Error</string>
     <string name="reload">Reload</string>
     <string name="budget">Бюджет</string>
+    <string name="connection_changet">Подключение изменилось</string>
 </resources>
