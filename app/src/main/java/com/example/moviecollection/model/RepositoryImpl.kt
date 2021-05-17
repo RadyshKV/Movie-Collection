@@ -18,7 +18,7 @@ class RepositoryImpl : Repository {
     }
 
     override fun getMovieDetailsDataFromServer(id: Long?): MovieDetailDTO? {
-        return loadMovieDetails(id)
+        return Loader.loadMovieDetails(id)
     }
 
     private fun getGenres(genre_ids: List<Int>?, genresDTO: List<GenreDTO>): List<String> {

@@ -11,9 +11,10 @@ import com.geekbrains.weatherwithmvvm.interactors.strings_interactor.StringsInte
 class DetailsViewModel : ViewModel(), LifecycleObserver {
     private val repository: Repository = RepositoryImpl()
     val liveDataToObserve: MutableLiveData<AppState> = MutableLiveData()
-    lateinit var stringsInteractor: StringsInteractor
+
 
     fun loadData(id: Long?) {
+
         liveDataToObserve.value = AppState.Loading
         Thread {
             val data = repository.getMovieDetailsDataFromServer(id)
