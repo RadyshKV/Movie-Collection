@@ -8,9 +8,9 @@ import STRING_BUILDER_CAPACITY
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.moviecollection.BuildConfig
-import com.example.moviecollection.model.rest_entities.GenreDTO
-import com.example.moviecollection.model.rest_entities.MovieDTO
-import com.example.moviecollection.model.rest_entities.MovieDetailDTO
+import com.example.moviecollection.model.rest.rest_entities.GenreDTO
+import com.example.moviecollection.model.rest.rest_entities.MovieDTO
+import com.example.moviecollection.model.rest.rest_entities.MovieDetailDTO
 import com.google.gson.Gson
 import org.json.JSONObject
 import java.io.BufferedReader
@@ -26,7 +26,8 @@ object Loader {
         try {
             val region = if (isRussian) "&region=RU" else ""
             val uri =
-                URL("https://api.themoviedb.org/3/movie/top_rated?api_key=${BuildConfig.MOVIE_API_KEY}&language=ru-RU&page=1${region}")
+                URL("https://api.themoviedb.org/3/movie/top_rated?api_key=" +
+                        "${BuildConfig.MOVIE_API_KEY}&language=ru-RU&page=1${region}")
             return loadArrayDTO(uri, SECTOR_RESULTS)
         } catch (e: MalformedURLException) {
             e.printStackTrace()
@@ -37,7 +38,8 @@ object Loader {
     fun loadGenres(): List<GenreDTO>? {
         try {
             val uri =
-                URL("https://api.themoviedb.org/3/genre/movie/list?language=ru-RU&api_key=${BuildConfig.MOVIE_API_KEY}&language=ru-RU")
+                URL("https://api.themoviedb.org/3/genre/movie/list?language=ru-RU&api_key=" +
+                        "${BuildConfig.MOVIE_API_KEY}&language=ru-RU")
             return loadArrayDTO(uri, SECTOR_GENRES)
         } catch (e: MalformedURLException) {
             e.printStackTrace()
@@ -113,7 +115,8 @@ object Loader {
     fun loadMovieDetails(id: Long?): MovieDetailDTO? {
         try {
             val uri =
-                URL("https://api.themoviedb.org/3/movie/${id}?api_key=${BuildConfig.MOVIE_API_KEY}&language=ru-RU")
+                URL("https://api.themoviedb.org/3/movie/${id}?api_key=" +
+                        "${BuildConfig.MOVIE_API_KEY}&language=ru-RU")
             return Loader.loadDTO(uri)
         } catch (e: MalformedURLException) {
             e.printStackTrace()

@@ -1,8 +1,13 @@
 package com.example.moviecollection.model
 
+import LANGUAGE
+import REGION_RU
+import REGION_US
+import com.example.moviecollection.BuildConfig
 import com.example.moviecollection.model.entities.Movie
-import com.example.moviecollection.model.rest_entities.GenreDTO
-import com.example.moviecollection.model.rest_entities.MovieDetailDTO
+import com.example.moviecollection.model.rest.rest_entities.*
+import com.example.moviecollection.model.rest.rest_interaction.BackendRepo
+import retrofit2.Callback
 
 class RepositoryImpl : Repository {
 
@@ -12,28 +17,54 @@ class RepositoryImpl : Repository {
         val movies: MutableList<Movie> = mutableListOf()
         val moviesDTO = Loader.loadMovies(isRussian)
         moviesDTO?.forEach { movieDTO ->
-            movies.add(Movie(id = movieDTO.id, title = movieDTO.title, dateOfRelease = movieDTO.release_date, genre = getGenres(movieDTO.genre_ids, genresDTO as List<GenreDTO>)))
+            movies.add(Movie(
+                id = movieDTO.id,
+                title = movieDTO.title,
+                dateOfRelease = movieDTO.releaseDate,
+                genre = getGenres(
+                    movieDTO.genres,
+                    genresDTO as List<GenreDTO>)
+            )
+            )
         }
         return movies
+    }
+
+    override fun getMoviesDataFromServerAsync(isRussian: Boolean, callback: Callback<MoviesDTO>) {
+        val region = if (isRussian) REGION_RU else REGION_US
+        val page = 1
+        BackendRepo.api.getMoviesList(BuildConfig.MOVIE_API_KEY, LANGUAGE, page, region).enqueue(callback)
+    }
+
+    override fun getGenresDataFromServerAsync(
+        callback: Callback<GenresDTO>
+    ) {
+        BackendRepo.api.getGenresList(BuildConfig.MOVIE_API_KEY, LANGUAGE).enqueue(callback)
     }
 
     override fun getMovieDetailsDataFromServer(id: Long?): MovieDetailDTO? {
         return Loader.loadMovieDetails(id)
     }
 
-    private fun getGenres(genre_ids: List<Int>?, genresDTO: List<GenreDTO>): List<String> {
+    override fun getMovieDetailsDataFromServerAsync(id: Long?, callback: Callback<MovieDetailDTO>) {
+        BackendRepo.api.getMovie(id, BuildConfig.MOVIE_API_KEY, LANGUAGE).enqueue(callback)
+    }
+
+    fun getGenres(genresList: List<Int>?, genresDTO: List<GenreDTO>?): List<String> {
         val result: MutableList<String> = mutableListOf()
-        if (genre_ids != null) {
-            for (genre_id in genre_ids) {
-                result.add(getGenreString(genre_id, genresDTO))
+        if (genresList != null) {
+            for (genre in genresList) {
+                result.add(getGenreString(genre, genresDTO))
             }
         }
         return result
     }
 
-    private fun getGenreString(genreID: Int, genresDTO: List<GenreDTO>): String {
-        for (genreDTO in genresDTO) {
-            if (genreDTO.id == genreID) return genreDTO.name
+    private fun getGenreString(genreID: Int, genresDTO: List<GenreDTO>?): String {
+        if (genresDTO != null) {
+            for (genreDTO in genresDTO) {
+                if (genreDTO.id == genreID) return genreDTO.name
+            }
         }
         return ""
     }
