@@ -1,5 +1,6 @@
 package com.example.moviecollection.model.services
 
+import DEFAULT_MOVIE_ID
 import DETAILS_BUDGET_EXTRA
 import DETAILS_DATA_EMPTY_EXTRA
 import DETAILS_INTENT_EMPTY_EXTRA
@@ -23,7 +24,7 @@ import androidx.core.app.JobIntentService
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.moviecollection.BuildConfig
 import com.example.moviecollection.model.Loader
-import com.example.moviecollection.model.rest_entities.MovieDetailDTO
+import com.example.moviecollection.model.rest.rest_entities.MovieDetailDTO
 import com.google.gson.Gson
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -37,8 +38,8 @@ class DetailsService(name: String = "DetailService") : JobIntentService() {
 
     override fun onHandleWork(intent: Intent) {
 
-        val id = intent.getLongExtra(MOVIE_ID, 0L)
-        if (id == 0L) {
+        val id = intent.getLongExtra(MOVIE_ID, DEFAULT_MOVIE_ID)
+        if (id == DEFAULT_MOVIE_ID) {
             onEmptyData()
         } else {
             loadMovieDetailsFromService(id)
@@ -49,7 +50,8 @@ class DetailsService(name: String = "DetailService") : JobIntentService() {
     private fun loadMovieDetailsFromService(id: Long?) {
         try {
             val uri =
-                URL("https://api.themoviedb.org/3/movie/${id}?api_key=${BuildConfig.MOVIE_API_KEY}&language=ru-RU")
+                URL("https://api.themoviedb.org/3/movie/${id}?api_key=" +
+                        "${BuildConfig.MOVIE_API_KEY}&language=ru-RU")
             lateinit var urlConnection: HttpsURLConnection
             try {
                 urlConnection = uri.openConnection() as HttpsURLConnection

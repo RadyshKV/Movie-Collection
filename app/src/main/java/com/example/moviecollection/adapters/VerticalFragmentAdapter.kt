@@ -26,7 +26,7 @@ class VerticalFragmentAdapter(private var mainFragment: MainFragment)
 
     fun initCategories() {
         for (movie in movies) {
-            movie.genre?.let {
+            movie.genre.let {
                 categories.add(it[0])
             }
         }
@@ -71,7 +71,7 @@ class VerticalFragmentAdapter(private var mainFragment: MainFragment)
                             }
                         }
                     }).apply {
-                setMovies(movies.filter { it.genre?.contains(categorie) == true })
+                setMovies(movies.filter { it.genre.contains(categorie) == true })
             }
             horizontalRecyclerView.adapter = horizontalAdapter
         }
