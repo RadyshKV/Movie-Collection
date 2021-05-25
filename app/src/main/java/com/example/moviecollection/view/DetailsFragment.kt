@@ -40,7 +40,6 @@ class DetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.stringsInteractor = StringsInteractorImpl(requireContext())
         movie = arguments?.getParcelable(BUNDLE_EXTRA) ?: Movie()
-
         with(binding) {
             movieTitle.text = movie.title
             dateOfRelease.text = movie.dateOfRelease
@@ -64,9 +63,15 @@ class DetailsFragment : Fragment() {
                         runtime.text = appState.movieData?.runtime.toString()
                         loadImage(appState.movieData?.posterPath)
                     }
+                    is AppState.SuccessNoteData -> {
+                        if (appState.noteData.size > 0){
+                            note.setText(appState.noteData[0].note)
+                        }
+                    }
                 }
             })
             viewModel.loadDataAsync(movie.id)
+            viewModel.loadNoteFromDB(movie.id)
         }
     }
 

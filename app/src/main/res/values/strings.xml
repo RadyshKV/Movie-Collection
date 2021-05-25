@@ -11,4 +11,9 @@
     <string name="reload">Reload</string>
     <string name="budget">Бюджет</string>
     <string name="connection_changet">Подключение изменилось</string>
+    <string name="adult_content">Показывать взрослый контент</string>
+    <string name="settings">Настройки</string>
+    <string name="settings_title">Настройки</string>
+    <string name="history_title">История</string>
+    <string name="hint_note_text">Ваши заметки</string>
 </resources>

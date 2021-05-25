@@ -22,9 +22,9 @@ class MainViewModel(
     private var genresDTO: List<GenreDTO>? = null
     lateinit var stringsInteractor: StringsInteractor
 
-    fun getMovieDataFromRemoteSourceRus() = getDataFromRemoteSourceAsync(isRussian = true)
+    fun getMovieDataFromRemoteSourceRus(isAdult: Boolean) = getDataFromRemoteSourceAsync(isRussian = true, isAdult)
 
-    fun getMovieDataFromRemoteSourceWorld() = getDataFromRemoteSourceAsync(isRussian = false)
+    fun getMovieDataFromRemoteSourceWorld(isAdult: Boolean) = getDataFromRemoteSourceAsync(isRussian = false, isAdult)
 
     private fun getDataFromRemoteSource(isRussian: Boolean) {
         liveDataToObserve.value = AppState.Loading
@@ -35,7 +35,7 @@ class MainViewModel(
         }.start()
     }
 
-    private fun loadGenresFromRemoteSourceAsync(isRussian: Boolean) {
+    private fun loadGenresFromRemoteSourceAsync(isRussian: Boolean, isAdult: Boolean) {
         val callback = object : Callback<GenresDTO> {
             override fun onResponse(
                 call: Call<GenresDTO>,
@@ -43,7 +43,7 @@ class MainViewModel(
             ) {
                 if (response.isSuccessful) {
                     genresDTO = response.body()?.genres
-                    getDataFromRemoteSourceAsync(isRussian)
+                    getDataFromRemoteSourceAsync(isRussian, isAdult)
                 } else {
                     liveDataToObserve.postValue(AppState.Error(IllegalStateException()))
                 }
@@ -57,7 +57,7 @@ class MainViewModel(
         repositoryImpl.getGenresDataFromServerAsync(callback)
     }
 
-    private fun getDataFromRemoteSourceAsync(isRussian: Boolean) {
+    private fun getDataFromRemoteSourceAsync(isRussian: Boolean, isAdult: Boolean) {
         genresDTO?.let {
             val callback = object : Callback<MoviesDTO> {
                 override fun onResponse(
@@ -67,6 +67,7 @@ class MainViewModel(
                     if (response.isSuccessful) {
                         val movies: MutableList<Movie> = mutableListOf()
                         response.body()?.movies?.forEach { movieDTO ->
+                            if ((!isAdult && movieDTO.adultContent == false) || isAdult){
                             movies.add(
                                 Movie(
                                     id = movieDTO.id,
@@ -78,6 +79,7 @@ class MainViewModel(
                                     )
                                 )
                             )
+                            }
                         }
                         liveDataToObserve.postValue(
                             AppState.SuccessListData(movies)
@@ -92,7 +94,7 @@ class MainViewModel(
                 }
             }
             repositoryImpl.getMoviesDataFromServerAsync(isRussian, callback)
-        } ?: loadGenresFromRemoteSourceAsync(isRussian)
+        } ?: loadGenresFromRemoteSourceAsync(isRussian, isAdult)
     }
 
     companion object {

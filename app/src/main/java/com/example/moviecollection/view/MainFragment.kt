@@ -1,5 +1,8 @@
 package com.example.moviecollection.view
 
+import IS_ADULT
+import PREFERENCES
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,9 +19,10 @@ import com.geekbrains.weatherwithmvvm.interactors.strings_interactor.StringsInte
 
 class MainFragment : Fragment() {
     private lateinit var binding: MainFragmentBinding
-    private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by lazy { ViewModelProvider(this).get(MainViewModel::class.java) }
     private var adapter: VerticalFragmentAdapter? = null
     private var isDataSetRus: Boolean = true
+    private var isAdult: Boolean = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = MainFragmentBinding.inflate(inflater, container, false)
@@ -29,18 +33,18 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.verticalFragmentRecyclerView.adapter = adapter
         binding.mainFragmentFAB.setOnClickListener { changeMovieDataSet() }
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.stringsInteractor = StringsInteractorImpl(requireContext())
         viewModel.getLiveData().observe(viewLifecycleOwner, { renderData(it as AppState) })
-        viewModel.getMovieDataFromRemoteSourceRus()
+        isAdult = activity?.getSharedPreferences( PREFERENCES, Context.MODE_PRIVATE)?.getBoolean(IS_ADULT, false) ?: false
+        viewModel.getMovieDataFromRemoteSourceRus(isAdult)
     }
 
     private fun changeMovieDataSet() = with(binding) {
         if (isDataSetRus) {
-            viewModel.getMovieDataFromRemoteSourceWorld()
+            viewModel.getMovieDataFromRemoteSourceWorld(isAdult)
             mainFragmentFAB.setImageResource(R.drawable.ic_earth)
         } else {
-            viewModel.getMovieDataFromRemoteSourceRus()
+            viewModel.getMovieDataFromRemoteSourceRus(isAdult)
             mainFragmentFAB.setImageResource(R.drawable.ic_russia)
         }
         isDataSetRus = !isDataSetRus
@@ -65,7 +69,7 @@ class MainFragment : Fragment() {
                 mainFragmentRootView.showSnackBar(
                         viewModel.stringsInteractor.errorStr,
                         viewModel.stringsInteractor.reloadStr,
-                        { viewModel.getMovieDataFromRemoteSourceRus() })
+                        { viewModel.getMovieDataFromRemoteSourceRus(isAdult) })
             }
         }
     }
