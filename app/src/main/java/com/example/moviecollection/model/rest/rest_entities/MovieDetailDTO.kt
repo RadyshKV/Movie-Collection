@@ -4,6 +4,12 @@ import com.google.gson.annotations.SerializedName
 
 data class MovieDetailDTO(
 
+        @SerializedName("id")
+        val id: Long?,
+
+        @SerializedName("title")
+        val title: String?,
+
         @SerializedName("budget")
         val budget: Long?,
 

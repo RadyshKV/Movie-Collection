@@ -2,7 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-android-extensions'
-
+    id 'kotlin-kapt'
 }
 android {
     compileSdkVersion 30
@@ -62,7 +62,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     //Image loading
     implementation 'com.squareup.picasso:picasso:2.8'
-
+    //Room
+    implementation  "androidx.room:room-runtime:2.3.0"
+    kapt  'androidx.room:room-compiler:2.3.0'
 
 }
 repositories {

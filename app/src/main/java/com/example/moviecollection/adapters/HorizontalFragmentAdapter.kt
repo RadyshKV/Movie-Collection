@@ -4,13 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moviecollection.databinding.FragmentItemBinding
+import com.example.moviecollection.databinding.ItemListMovieBinding
 import com.example.moviecollection.model.entities.Movie
 import com.example.moviecollection.model.interfaces.OnItemViewClickListener
 
 class HorizontalFragmentAdapter(private var itemClickListener: OnItemViewClickListener?)
     : RecyclerView.Adapter<HorizontalFragmentAdapter.ItemViewHolder>() {
-    private lateinit var binding: FragmentItemBinding
+    private lateinit var binding: ItemListMovieBinding
     private var moviesData: List<Movie> = listOf()
 
     fun removeListener() {
@@ -24,7 +24,7 @@ class HorizontalFragmentAdapter(private var itemClickListener: OnItemViewClickLi
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int
     ): ItemViewHolder {
-        binding = FragmentItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        binding = ItemListMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ItemViewHolder(binding.root)
     }
 

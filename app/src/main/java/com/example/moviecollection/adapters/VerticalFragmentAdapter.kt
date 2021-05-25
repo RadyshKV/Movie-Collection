@@ -13,8 +13,8 @@ import com.example.moviecollection.view.DetailsFragment
 import com.example.moviecollection.view.MainFragment
 
 
-class VerticalFragmentAdapter(private var mainFragment: MainFragment)
-    : RecyclerView.Adapter<VerticalFragmentAdapter.MainViewHolder>() {
+class VerticalFragmentAdapter(private var mainFragment: MainFragment) :
+    RecyclerView.Adapter<VerticalFragmentAdapter.MainViewHolder>() {
     private lateinit var binding: CategoriesFragmentBinding
     private var movies: List<Movie> = listOf()
     private var categories: MutableCollection<String> = mutableSetOf()
@@ -26,16 +26,16 @@ class VerticalFragmentAdapter(private var mainFragment: MainFragment)
 
     fun initCategories() {
         for (movie in movies) {
-            movie.genre.let {
-                categories.add(it[0])
-            }
+            categories.add(movie.genre[0])
         }
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int
+    override fun onCreateViewHolder(
+        parent: ViewGroup, viewType: Int
     ): MainViewHolder {
-        binding = CategoriesFragmentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        binding =
+            CategoriesFragmentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MainViewHolder(binding.root)
     }
 
@@ -58,20 +58,20 @@ class VerticalFragmentAdapter(private var mainFragment: MainFragment)
             horizontalFragmentTitle.text = categorie
             horizontalRecyclerView = horizontalFragmentRecyclerView
             horizontalAdapter = HorizontalFragmentAdapter(
-                    object : OnItemViewClickListener {
-                        override fun onItemViewClick(movie: Movie) {
-                            mainFragment.activity?.supportFragmentManager?.let { manager ->
-                                val bundle = Bundle().apply {
-                                    putParcelable(DetailsFragment.BUNDLE_EXTRA, movie)
-                                }
-                                manager.beginTransaction()
-                                        .add(R.id.container, DetailsFragment.newInstance(bundle))
-                                        .addToBackStack("")
-                                        .commitAllowingStateLoss()
+                object : OnItemViewClickListener {
+                    override fun onItemViewClick(movie: Movie) {
+                        mainFragment.activity?.supportFragmentManager?.let { manager ->
+                            val bundle = Bundle().apply {
+                                putParcelable(DetailsFragment.BUNDLE_EXTRA, movie)
                             }
+                            manager.beginTransaction()
+                                .add(R.id.container, DetailsFragment.newInstance(bundle))
+                                .addToBackStack("")
+                                .commitAllowingStateLoss()
                         }
-                    }).apply {
-                setMovies(movies.filter { it.genre.contains(categorie) == true })
+                    }
+                }).apply {
+                setMovies(movies.filter { it.genre.contains(categorie) })
             }
             horizontalRecyclerView.adapter = horizontalAdapter
         }
