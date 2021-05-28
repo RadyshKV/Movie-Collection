@@ -42,6 +42,10 @@ class MainActivity : AppCompatActivity() {
                 openFragment(HistoryFragment.newInstance())
                 true
             }
+            R.id.menu_contacts -> {
+                openFragment(ContactsFragment.newInstance())
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

@@ -16,4 +16,5 @@
     <string name="settings_title">Настройки</string>
     <string name="history_title">История</string>
     <string name="hint_note_text">Ваши заметки</string>
+    <string name="contacts_title">Контакты</string>
 </resources>

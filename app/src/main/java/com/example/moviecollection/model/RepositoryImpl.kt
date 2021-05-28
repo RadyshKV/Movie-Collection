@@ -81,7 +81,7 @@ class RepositoryImpl : Repository {
     override fun getAllHistory(): List<HistoryEntity> =
         Database.db.historyDao().all()
 
-    override fun saveEntity(movie: MovieDetailDTO?) {
+    override fun saveHistoryEntity(movie: MovieDetailDTO?) {
         Database.db.historyDao().insert(convertMovieToEntity(movie))
     }
 
@@ -91,4 +91,7 @@ class RepositoryImpl : Repository {
     override fun getNoteFromDB(id: Long?): List<NoteEntity> =
         Database.db.noteDao().getDataById(id)
 
+    override fun saveNoteToDB(id: Long?, note: String) {
+        Database.db.noteDao().insert(NoteEntity(id, note))
+    }
 }

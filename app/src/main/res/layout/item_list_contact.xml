@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical">
+
+<TextView
+    android:id="@+id/contactName"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/history_item_margin"
+    android:layout_marginTop="@dimen/history_item_margin"
+    tools:text="контакт" />
+
+<View
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/height_1dp"
+    android:layout_marginTop="@dimen/history_item_margin"
+    android:background="@android:color/darker_gray" />
+</LinearLayout>
