@@ -28,7 +28,7 @@ class DetailsViewModel : ViewModel(), LifecycleObserver, CoroutineScope by MainS
         launch(Dispatchers.IO) {
             val data = repository.getMovieDetailsDataFromServer(id)
             liveDataToObserve.postValue(AppState.SuccessDetailsData(data))
-            repository.saveEntity(data)
+            repository.saveHistoryEntity(data)
         }
     }
 
@@ -39,7 +39,7 @@ class DetailsViewModel : ViewModel(), LifecycleObserver, CoroutineScope by MainS
                 response: Response<MovieDetailDTO>
             ) {
                 if (response.isSuccessful){
-                    launch(Dispatchers.IO) { repository.saveEntity(response.body()) }
+                    launch(Dispatchers.IO) { repository.saveHistoryEntity(response.body()) }
                     liveDataToObserve.postValue(AppState.SuccessDetailsData(
                         response.body()
                     ))
@@ -61,6 +61,13 @@ class DetailsViewModel : ViewModel(), LifecycleObserver, CoroutineScope by MainS
             val note = repository.getNoteFromDB(id)
             liveDataToObserve.postValue(AppState.SuccessNoteData(note))
         }
+    }
+
+    fun saveNoteToDB(id: Long?, note: String){
+        launch(Dispatchers.IO) {
+            repository.saveNoteToDB(id, note)
+        }
+
     }
 
 }

@@ -13,6 +13,7 @@ interface Repository {
     fun getMovieDetailsDataFromServer(id: Long?): MovieDetailDTO?
     fun getMovieDetailsDataFromServerAsync(id: Long?, callback: Callback<MovieDetailDTO>)
     fun getAllHistory(): List<HistoryEntity>
-    fun saveEntity(movie: MovieDetailDTO?)
+    fun saveHistoryEntity(movie: MovieDetailDTO?)
     fun getNoteFromDB(id: Long?): List<NoteEntity>
+    fun saveNoteToDB(id: Long?, note: String)
 }

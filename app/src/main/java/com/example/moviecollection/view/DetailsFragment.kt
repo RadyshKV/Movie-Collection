@@ -75,6 +75,11 @@ class DetailsFragment : Fragment() {
         }
     }
 
+    override fun onDestroy() = with(binding) {
+        viewModel.saveNoteToDB(movie.id, note.text.toString())
+        super.onDestroy()
+    }
+
     private fun loadImage(url: String?) = with(binding){
         Picasso.get()
             .load("$IMAGE_BASE_PATH$url")
