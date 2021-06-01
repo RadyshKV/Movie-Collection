@@ -3,6 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/menu_map"
+        android:title="@string/map_title"
+        android:icon="@android:drawable/ic_dialog_map"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:id="@+id/menu_settings"
         android:title="@string/settings_title"
         android:icon="@drawable/ic_settings"

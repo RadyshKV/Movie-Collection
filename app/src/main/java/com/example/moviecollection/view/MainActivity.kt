@@ -46,6 +46,10 @@ class MainActivity : AppCompatActivity() {
                 openFragment(ContactsFragment.newInstance())
                 true
             }
+            R.id.menu_map -> {
+                openFragment(GoogleMapsFragment.newInstance())
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
