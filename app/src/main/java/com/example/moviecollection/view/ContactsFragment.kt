@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.example.moviecollection.R
 import com.example.moviecollection.adapters.ContactsAdapter
 import com.example.moviecollection.databinding.ContactsFragmentBinding
 import com.example.moviecollection.model.entities.Contact
@@ -59,15 +60,15 @@ class ContactsFragment: Fragment() {
         when (requestCode) {
             REQUEST_CODE -> {
                 // Проверяем, дано ли пользователем разрешение по нашему запросу
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                if ((grantResults.isNotEmpty() && grantResults.first() == PackageManager.PERMISSION_GRANTED)) {
                     getContacts()
                 } else {
                     // Поясните пользователю, что экран останется пустым, потому что доступ к контактам не предоставлен
                     context?.let {
                         AlertDialog.Builder(it)
-                            .setTitle("Доступ к контактам")
-                            .setMessage("Объяснение")
-                            .setNegativeButton("Закрыть") { dialog, _ -> dialog.dismiss() }
+                            .setTitle(getString(R.string.access_to_contacts))
+                            .setMessage(getString(R.string.explain))
+                            .setNegativeButton(getString(R.string.close)) { dialog, _ -> dialog.dismiss() }
                             .create()
                             .show()
                     }
@@ -108,7 +109,6 @@ class ContactsFragment: Fragment() {
     companion object {
 
         private const val REQUEST_CODE = 42
-        @JvmStatic
-        fun newInstance() = ContactsFragment()
+        fun newInstance(): ContactsFragment = ContactsFragment()
     }
 }

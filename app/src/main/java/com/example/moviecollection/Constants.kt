@@ -1,3 +1,5 @@
+import com.google.android.gms.maps.model.LatLng
+
 const val DETAILS_INTENT_FILTER = "DETAILS INTENT FILTER"
 const val DETAILS_LOAD_RESULT_EXTRA = "LOAD RESULT"
 const val DETAILS_INTENT_EMPTY_EXTRA = "INTENT IS EMPTY"
@@ -29,3 +31,9 @@ const val REGION_US = "US"
 const val IMAGE_BASE_PATH = "https://image.tmdb.org/t/p/original"
 const val IS_ADULT = "ADULT_KEY"
 const val PREFERENCES = "MainPreferences"
+const val LOCATION_MAX_RESULT = 1
+const val MAP_ZOOM = 15f
+const val ADDRESS_LINE_INDEX = 0
+const val LINE_WIDTH = 5f
+const val INIT_LAT = 59.9391
+const val INIT_LON = 30.3158

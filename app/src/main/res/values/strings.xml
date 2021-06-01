@@ -17,4 +17,11 @@
     <string name="history_title">История</string>
     <string name="hint_note_text">Ваши заметки</string>
     <string name="contacts_title">Контакты</string>
+    <string name="map_title">Карта</string>
+    <string name="access_to_contacts">Доступ к контактам</string>
+    <string name="explain">Объяснение</string>
+    <string name="close">Закрыть</string>
+    <string name="enter_query">Введите запрос</string>
+    <string name="search">Поиск</string>
+    <string name="marker_start">Стартовая точка</string>
 </resources>
